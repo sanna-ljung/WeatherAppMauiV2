@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherAppMauiV2.MainPage"
+             xmlns:viewmodels="clr-namespace:WeatherAppMauiV2.ViewModels"
+             xmlns:models="clr-namespace:WeatherAppMauiV2.Models"
+             x:DataType="viewmodels:MainViewModel">
+
+    <!-- Gradient background -->
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFB5D5" Offset="0.0" />
+            <GradientStop Color="#E4A5FF" Offset="0.3" />
+            <GradientStop Color="#C5C4FF" Offset="0.6" />
+            <GradientStop Color="#A8E6E3" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- SearchBar för stadssökning -->
+            <SearchBar x:Name="searchBar"
+                       Placeholder="Sök stad..."
+                       PlaceholderColor="#C5C4FF"
+                      TextColor="White"
+                      FontAttributes="Bold"
+                      BackgroundColor="#80FFFFFF"
+                      SearchButtonPressed="OnSearchButtonPressed"
+                  HorizontalOptions="Fill"
+                      Margin="0,0,0,10">
+            </SearchBar>
+
+
+            <!-- Stad med moln-ikon -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                <Label Text="{Binding CityName}"
+                       FontSize="36"
+                       FontFamily="FredokaBold"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center">
+                    <Label.Shadow>
+                        <Shadow Brush="Pink" Offset="3,3" Radius="5" Opacity="0.5" />
+                    </Label.Shadow>
+                </Label>
+                <Label Text="☁️" FontSize="40" />
+            </HorizontalStackLayout>
+
+            <!-- Huvud väder kort -->
+            <Border StrokeShape="RoundRectangle 30"
+                    StrokeThickness="0"
+                    Margin="0,5"
+                    Padding="20">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="5,5" Radius="10" Opacity="0.3" />
+                </Border.Shadow>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#E4A5FF" Offset="0.0" />
+                        <GradientStop Color="#C5C4FF" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <VerticalStackLayout Spacing="15">
+                    <!-- Väder ikon (stor) -->
+                    <Label Text="{Binding WeatherIcon}"
+                           FontSize="80"
+                           HorizontalOptions="Center" />
+
+                    <!-- Temperatur -->
+                    <Label Text="{Binding Temperature, StringFormat='{0:0}°C'}"
+                           FontSize="56"
+                           FontFamily="FredokaSemiBold"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center">
+                        <Label.Shadow>
+                            <Shadow Brush="White" Offset="2,2" Radius="8" Opacity="0.8" />
+                        </Label.Shadow>
+                    </Label>
+
+                    <!-- Beskrivning -->
+                    <Label Text="{Binding WeatherDescription}"
+                           FontSize="24"
+                           FontFamily="FredokaSemiBold"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center">
+                        <Label.Shadow>
+                            <Shadow Brush="#E4A5FF" Offset="2,2" Radius="5" Opacity="0.6" />
+                        </Label.Shadow>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Info-kort: Fukt, Vind, Känns som -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="15">
+                <!-- Fuktighet -->
+                <Border Grid.Column="0"
+                        StrokeShape="RoundRectangle 20"
+                        StrokeThickness="0"
+                        Background="#FFE4F0"
+                        Padding="10">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="3,3" Radius="8" Opacity="0.2" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="💧" FontSize="35" HorizontalOptions="Center" />
+                        <Label Text="{Binding Humidity, StringFormat='{0}%'}"
+                               FontSize="16"
+                               FontFamily="FredokaLight"
+                               TextColor="#302E2D"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Vindhastighet -->
+                <Border Grid.Column="1"
+                        StrokeShape="RoundRectangle 20"
+                        StrokeThickness="0"
+                        Background="#D4F1F4"
+                        Padding="15">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="3,3" Radius="8" Opacity="0.2" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="💨" FontSize="35" HorizontalOptions="Center" />
+                        <Label Text="{Binding WindSpeed, StringFormat='{0:0} km/h'}"
+                               FontSize="16"
+                               FontFamily="FredokaLight"
+                               TextColor="#302E2D"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Känns som -->
+                <Border Grid.Column="2"
+                        StrokeShape="RoundRectangle 20"
+                        StrokeThickness="0"
+                        Background="#FFE5CC"
+                        Padding="15">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="3,3" Radius="8" Opacity="0.2" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="🌡️" FontSize="35" HorizontalOptions="Center" />
+                        <Label Text="{Binding FeelsLike, StringFormat='{0:0}°C'}"
+                               FontSize="16"
+                               FontFamily="FredokaLight"
+                               TextColor="#302E2D"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- 24-Hour Forecast rubrik -->
+            <Label Text="24-Hour Forecast"
+                   FontSize="24"
+                   FontFamily="FredokaSemiBold"
+                   TextColor="White"
+                   Margin="0,10,0,0" />
+
+            <!-- Vertikal scrollbar lista -->
+            <CollectionView ItemsSource="{Binding HourlyForecasts}"
+                HeightRequest="400">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" 
+                          ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:HourlyForecast">
+                        <Border StrokeShape="RoundRectangle 20"
+                                StrokeThickness="0"
+                                Background="#FFF8E1"
+                                Padding="10"
+                                Margin="3,0">
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Offset="3,3" Radius="8" Opacity="0.2" />
+                            </Border.Shadow>
+                            <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                                <Label Text="{Binding Time}"
+                           FontSize="16"
+                           FontFamily="FredokaRegular"
+                           TextColor="#302E2D"
+                           MinimumWidthRequest="50" />
+                                <Label Text="{Binding Icon}"
+                           FontSize="30"
+                           VerticalOptions="Center" />
+                                <Label Text="{Binding Temperature, StringFormat='{0:0}°'}"
+                           FontSize="18"
+                           FontFamily="FredokaRegular"
+                           FontAttributes="Bold"
+                           TextColor="#302E2D"
+                           VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Loading indicator -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                              IsVisible="{Binding IsLoading}"
+                              Color="White"
+                              HeightRequest="50" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
