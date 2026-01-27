@@ -361,3 +361,23 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Crash dumps och stora filer
+*.dmp
+*.core
+*.log
+
+# Build folders
+bin/
+obj/
+.vs/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+
+# MAUI
+**/bin/
+**/obj/
+**/.vs/
