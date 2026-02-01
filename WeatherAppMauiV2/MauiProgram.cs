@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using WeatherAppMauiV2.Services;
 using WeatherAppMauiV2.ViewModels;
+using WeatherAppMauiV2.Views;
 
 namespace WeatherAppMauiV2
 {
@@ -22,13 +23,18 @@ namespace WeatherAppMauiV2
                 });
 
             // Registrera services
+            builder.Services.AddSingleton<HttpClient>();
             builder.Services.AddSingleton<IWeatherService, WeatherAPIService>();
 
             // Registrera ViewModels
             builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddTransient<ForecastDetailViewModel>();
+            builder.Services.AddSingleton<FavoriteCitiesViewModel>();
 
             // Registrera Views
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddTransient<HourlyForecastDetailPage>();
+            builder.Services.AddSingleton<FavoriteCitiesPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

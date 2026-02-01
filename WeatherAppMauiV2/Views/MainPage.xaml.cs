@@ -1,4 +1,5 @@
-﻿using WeatherAppMauiV2.ViewModels;
+﻿using WeatherAppMauiV2.Models;
+using WeatherAppMauiV2.ViewModels;
 
 namespace WeatherAppMauiV2
 {
@@ -18,8 +19,19 @@ namespace WeatherAppMauiV2
                 if (!string.IsNullOrWhiteSpace(city))
                 {
                     await viewModel.SearchWeatherCommand.ExecuteAsync(city);
-                    searchBar.Text = string.Empty; // Rensa sökfältet
+                    searchBar.Text = string.Empty;
                 }
+            }
+        }
+        private async void OnForecastSelected(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.FirstOrDefault() is HourlyForecast forecast &&
+                BindingContext is MainViewModel viewModel)
+            {
+                await viewModel.NavigateToForecastDetailCommand.ExecuteAsync(forecast);
+
+                // Avmarkera
+                ((CollectionView)sender).SelectedItem = null;
             }
         }
 

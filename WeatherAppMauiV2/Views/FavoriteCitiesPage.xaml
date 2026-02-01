@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherAppMauiV2.Views.FavoriteCitiesPage"
+             xmlns:viewmodels="clr-namespace:WeatherAppMauiV2.ViewModels"
+             x:DataType="viewmodels:FavoriteCitiesViewModel"
+             Title="FavoriteCitiesPage">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFB5D5" Offset="0.0" />
+            <GradientStop Color="#E4A5FF" Offset="0.3" />
+            <GradientStop Color="#C5C4FF" Offset="0.6" />
+            <GradientStop Color="#A8E6E3" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid RowDefinitions="Auto,*" Padding="20" RowSpacing="15">
+
+        <!-- Header -->
+        <Label Grid.Row="0"
+               Text="Välj stad"
+               FontSize="32"
+               FontFamily="FredokaBold"
+               TextColor="White"
+               HorizontalOptions="Center">
+            <Label.Shadow>
+                <Shadow Brush="Pink" Offset="2,2" Radius="5" Opacity="0.5" />
+            </Label.Shadow>
+        </Label>
+
+        <!-- Stadslista -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Cities}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnCitySelected">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" 
+                           ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:CityItem">
+                    <Border StrokeShape="RoundRectangle 20"
+                            StrokeThickness="0"
+                            Background="White"
+                            Padding="20"
+                            Margin="0,5">
+                        <Border.Shadow>
+                            <Shadow Brush="Black" Offset="3,3" Radius="8" Opacity="0.2" />
+                        </Border.Shadow>
+                        <HorizontalStackLayout Spacing="15">
+                            <Label Text="{Binding Flag}" FontSize="40" />
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="{Binding Name}"
+                                       FontSize="20"
+                                       FontFamily="FredokaBold"
+                                       TextColor="#302E2D" />
+                                <Label Text="{Binding Country}"
+                                       FontSize="14"
+                                       FontFamily="FredokaRegular"
+                                       TextColor="#666" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

@@ -23,14 +23,21 @@
             <SearchBar x:Name="searchBar"
                        Placeholder="Sök stad..."
                        PlaceholderColor="#C5C4FF"
-                      TextColor="White"
-                      FontAttributes="Bold"
-                      BackgroundColor="#80FFFFFF"
-                      SearchButtonPressed="OnSearchButtonPressed"
-                  HorizontalOptions="Fill"
-                      Margin="0,0,0,10">
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       BackgroundColor="#80FFFFFF"
+                       SearchButtonPressed="OnSearchButtonPressed"
+                       HorizontalOptions="Fill"
+                       Margin="0,0,0,10">
             </SearchBar>
 
+            <Label Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding ErrorMessage.Length}"
+                   TextColor="Red"
+                   FontSize="16"
+                   FontFamily="FredokaRegular"
+                   HorizontalOptions="Center"
+                   Margin="0,5" />
 
             <!-- Stad med moln-ikon -->
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
@@ -163,7 +170,9 @@
 
             <!-- Vertikal scrollbar lista -->
             <CollectionView ItemsSource="{Binding HourlyForecasts}"
-                HeightRequest="400">
+                HeightRequest="400"
+                SelectionMode="Single"
+                SelectionChanged="OnForecastSelected">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" 
                           ItemSpacing="10" />
