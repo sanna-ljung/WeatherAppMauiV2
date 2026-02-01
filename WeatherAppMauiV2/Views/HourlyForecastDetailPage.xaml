@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherAppMauiV2.Views.HourlyForecastDetailPage"
+             xmlns:viewmodels="clr-namespace:WeatherAppMauiV2.ViewModels"
+             x:DataType="viewmodels:ForecastDetailViewModel"
+             Title="HourlyForecastDetailPage">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFB5D5" Offset="0.0" />
+            <GradientStop Color="#E4A5FF" Offset="0.3" />
+            <GradientStop Color="#C5C4FF" Offset="0.6" />
+            <GradientStop Color="#A8E6E3" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Stor väderikon -->
+            <Label Text="{Binding Forecast.Icon}"
+                   FontSize="120"
+                   HorizontalOptions="Center" />
+
+            <!-- Tidpunkt -->
+            <Label Text="{Binding Forecast.Time, StringFormat='Klockan {0}'}"
+                   FontSize="32"
+                   FontFamily="FredokaBold"
+                   TextColor="White"
+                   HorizontalOptions="Center">
+                <Label.Shadow>
+                    <Shadow Brush="Pink" Offset="2,2" Radius="5" Opacity="0.5" />
+                </Label.Shadow>
+            </Label>
+
+            <!-- Detaljerat väderkort -->
+            <Border StrokeShape="RoundRectangle 30"
+                    StrokeThickness="0"
+                    Padding="20"
+                    Background="White">
+                <VerticalStackLayout Spacing="15">
+
+                    <Label Text="Väderdetaljer"
+                           FontSize="24"
+                           FontFamily="FredokaSemiBold"
+                           TextColor="#302E2D" />
+
+                    <!-- Temperatur -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="🌡️" FontSize="30" />
+                        <Label Text="Temperatur:" FontSize="18" FontFamily="FredokaRegular" TextColor="#302E2D" />
+                        <Label Text="{Binding Forecast.Temperature, StringFormat='{0:0}°C'}"
+                               FontSize="18"
+                               FontFamily="FredokaBold"
+                               TextColor="#302E2D" />
+                    </HorizontalStackLayout>
+
+                    <!-- Vädertyp -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="☁️" FontSize="30" />
+                        <Label Text="Väder:" FontSize="18" FontFamily="FredokaRegular" TextColor="#302E2D" />
+                        <Label Text="{Binding WeatherDescription}"
+                               FontSize="18"
+                               FontFamily="FredokaBold"
+                               TextColor="#302E2D" />
+                    </HorizontalStackLayout>
+
+                    <!-- Nederbörd -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="💧" FontSize="30" />
+                        <Label Text="Nederbörd:" FontSize="18" FontFamily="FredokaRegular" TextColor="#302E2D" />
+                        <Label Text="{Binding PrecipitationChance, StringFormat='{0}%'}"
+                               FontSize="18"
+                               FontFamily="FredokaBold"
+                               TextColor="#302E2D" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Tillbaka-knapp -->
+            <Button Text="Tillbaka"
+                    Command="{Binding GoBackCommand}"
+                    BackgroundColor="#E4A5FF"
+                    TextColor="White"
+                    FontFamily="FredokaBold"
+                    Padding="15"
+                    CornerRadius="20"
+                    Margin="0,20,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

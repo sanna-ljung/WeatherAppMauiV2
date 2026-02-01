@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using WeatherAppMauiV2.Models;
 using WeatherAppMauiV2.Models.Dto;
 
@@ -15,9 +10,9 @@ namespace WeatherAppMauiV2.Services
         private const string WeatherBaseUrl = "https://api.open-meteo.com/v1/forecast";
         private const string GeocodingBaseUrl = "https://geocoding-api.open-meteo.com/v1/search";
 
-        public WeatherAPIService()
+        public WeatherAPIService(HttpClient httpClient)
         {
-            _httpClient = new HttpClient();
+            _httpClient = httpClient;
         }
 
         public async Task<WeatherData> GetWeatherAsync(string cityName)
@@ -33,9 +28,10 @@ namespace WeatherAppMauiV2.Services
 
                 System.Diagnostics.Debug.WriteLine($"City found: {city.Name}, Lat: {city.Latitude}, Lon: {city.Longitude}");
 
-                // debug culture variant? Punkt istället för komma
                 // 2. Bygg väder-URL
-                var weatherUrl = $"{WeatherBaseUrl}?latitude={city.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}&longitude={city.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto";
+                var weatherUrl = $"{WeatherBaseUrl}?latitude={city.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}" +
+                    $"&longitude={city.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}" +
+                    $"&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto";
 
                 System.Diagnostics.Debug.WriteLine($"Weather URL: {weatherUrl}");
 
@@ -58,6 +54,11 @@ namespace WeatherAppMauiV2.Services
                 };
 
                 var weather = JsonSerializer.Deserialize<WeatherResponse>(weatherJson, options);
+
+                if (weather?.Current == null)
+                {
+                    throw new Exception("API returned invalid weather data");
+                }
 
                 // 4. Returnera WeatherData
                 return new WeatherData
